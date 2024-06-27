@@ -1,0 +1,14 @@
+media/*
+!media/README.md
+splash/*
+!splash/README.md
+
+
+.env
+*.db
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
