@@ -18,14 +18,6 @@ IMAGE_DISPLAY_TIME = 10  # seconds
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
 pygame.display.set_caption("Media Player")
 
-# Load splash screen image
-splash_path = get_splash_image_path('splash')
-if splash_path:
-    splash_image = pygame.image.load(splash_path)
-    splash_image = pygame.transform.scale(splash_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
-else:
-    splash_image = None
-
 def get_splash_image_path(dir_name):
     splash_dir = os.path.join(os.path.dirname(__file__), dir_name)
     valid_image_extensions = ['.png', '.jpg', '.jpeg']
@@ -102,6 +94,13 @@ def play_media(directory):
                     play_image(media_file)
                 elif media_file.lower().endswith(('.mp4', '.avi', '.mov')):
                     play_video(media_file)
+
+# Load splash screen image
+splash_path = get_splash_image_path('splash')
+splash_image = None
+if splash_path:
+    splash_image = pygame.image.load(splash_path)
+    splash_image = pygame.transform.scale(splash_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
 def main():
     display_splash_screen(screen, splash_image)
