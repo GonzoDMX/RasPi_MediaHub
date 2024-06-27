@@ -1,4 +1,5 @@
 import os
+import glob
 import sys
 import time
 import pygame
@@ -18,11 +19,41 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREE
 pygame.display.set_caption("Media Player")
 
 # Load splash screen image
-splash_image = pygame.image.load('splash/splash.png')
-splash_image = pygame.transform.scale(splash_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
+splash_path = get_splash_image_path('splash')
+if splash_path:
+    splash_image = pygame.image.load(splash_path)
+    splash_image = pygame.transform.scale(splash_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
+else:
+    splash_image = None
 
-def display_splash_screen():
-    screen.blit(splash_image, (0, 0))
+def get_splash_image_path(dir_name):
+    splash_dir = os.path.join(os.path.dirname(__file__), dir_name)
+    valid_image_extensions = ['.png', '.jpg', '.jpeg']
+    
+    # Create a list to store the image files
+    image_files = []
+
+    # Iterate through the files in the splash directory
+    for file in glob.glob(os.path.join(splash_dir, '*')):
+        if os.path.isfile(file):
+            extension = os.path.splitext(file)[1].lower()
+            if extension in valid_image_extensions:
+                image_files.append(file)
+
+    # If no valid image files are found, return None
+    if not image_files:
+        return None
+
+    # Get the most recently added image file
+    latest_image = max(image_files, key=os.path.getctime)
+
+    return latest_image
+
+def display_splash_screen(screen, splash_image):
+    if splash_image:
+        screen.blit(splash_image, (0, 0))
+    else:
+        screen.fill((0, 0, 0))
     pygame.display.flip()
 
 def fade_to_black(duration=1.0):
@@ -73,7 +104,7 @@ def play_media(directory):
                     play_video(media_file)
 
 def main():
-    display_splash_screen()
+    display_splash_screen(screen, splash_image)
     while True:
         for event in pygame.event.get():
             if event.type == KEYDOWN:
