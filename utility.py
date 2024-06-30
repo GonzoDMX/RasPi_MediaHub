@@ -72,5 +72,5 @@ def get_video_path(obj_name):
         return latest_video
 
     except Exception as e:
-        logger.error(f"Error: Unable to access {obj_name}")
+        print(f"Error: Unable to access {obj_name}")
         return None
