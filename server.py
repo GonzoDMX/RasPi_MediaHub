@@ -9,7 +9,7 @@ def handle_media_request():
     state = request.args.get('state')
     obj = request.args.get('object')
 
-    if obj is None:
+    if state is None or obj is None:
         return '', 404
 
     # Add command to the queue
